@@ -46,11 +46,11 @@
 
         layer_0 {
             bindings = <
-&trans  &trans    &trans        &trans     &trans         &trans                                                  &trans       &trans  &trans              &trans               &trans       &trans
-&trans  &kp Q     &kp W         &kp E      &kp R          &kp T                                                   &kp Y        &kp U   &kp I               &kp O                &kp P        &trans
-&trans  &kp A     &kp S         &kp D      &kp F          &kp G      &trans                     &trans            &kp H        &kp J   &lt SCROLL_LAYER K  &kp L                &lt 1 ENTER  &trans
-&trans  &kp Z     &kp X         &kp C      &kp V          &kp B      &kp LC(UP_ARROW)           &kp LC(SPACE)     &kp N        &kp M   &kp COMMA           &kp DOT              &kp MINUS    &trans
-&trans  &kp LCMD  &kp LEFT_ALT  &kp LCTRL  &kp BACKSPACE  &mkp LCLK  &mt LEFT_SHIFT LANGUAGE_2  &lt 2 LANGUAGE_1  &lt 3 SPACE  &trans  &trans              &kp C_VOICE_COMMAND  &kp SLASH    &trans
+&trans  &trans    &trans        &trans     &trans         &trans                                                   &trans       &trans  &trans              &trans               &trans       &trans
+&trans  &kp Q     &kp W         &kp E      &kp R          &kp T                                                    &kp Y        &kp U   &kp I               &kp O                &kp P        &trans
+&trans  &kp A     &kp S         &kp D      &kp F          &kp G      &trans                     &trans             &kp H        &kp J   &lt SCROLL_LAYER K  &kp L                &lt 1 ENTER  &trans
+&trans  &kp Z     &kp X         &kp C      &kp V          &kp B      &kp LC(UP_ARROW)           &kp LC(LA(SPACE))  &kp N        &kp M   &kp COMMA           &kp DOT              &kp MINUS    &trans
+&trans  &kp LCMD  &kp LEFT_ALT  &kp LCTRL  &kp BACKSPACE  &mkp LCLK  &mt LEFT_SHIFT LANGUAGE_2  &lt 2 LANGUAGE_1   &lt 3 SPACE  &trans  &trans              &kp C_VOICE_COMMAND  &kp SLASH    &trans
             >;
         };
 
