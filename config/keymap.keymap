@@ -45,7 +45,7 @@
         korean: korean {
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&kp LEFT_COMMAND &kp LC(LA(SPACE))>;
+            bindings = <&kp LANG2 &kp LC(LA(SPACE))>;
             label = "KOREAN";
         };
     };
