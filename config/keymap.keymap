@@ -7,8 +7,18 @@
 #include <dt-bindings/zmk/pointing.h>
 
 #define SCROLL_LAYER 4
+#define AML_LAYER 1 /* オートマウスレイヤー＝layer_1（トラボを動かすと自動で乗る） */
 
 &pointing_listener {
+    /* 親の input-processors はシールド側(torabo_tsuki_lp_right.overlay)の指定を
+       そのまま引き継いだうえで、末尾に zip_temp_layer を足している。
+       <レイヤー番号 滞留ms> = トラボが止まってから5秒でAMLが剥がれる。 */
+    input-processors =
+        <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>,
+        <&zip_temp_layer AML_LAYER 5000>;
+
+    /* K長押し(SCROLL_LAYER)中はこちらがマッチして、上の input-processors は走らない。
+       ＝スクロール中にAMLが誤発動することもない。 */
     scroll {
         layers = <SCROLL_LAYER>;
         input-processors =
@@ -16,6 +26,29 @@
             <&zip_xy_to_scroll_mapper>,
             <&zip_scroll_scaler 1 8>;
     };
+};
+
+&zip_temp_layer {
+    /* 直前のキー入力から何ms以内ならAMLに入らないか。タイピング中の誤爆防止。 */
+    require-prior-idle-ms = <350>;
+
+    /* AMLを「解除しない」キー位置のリスト。
+       ここに載っていないキーを押すと即座に AML_LAYER が剥がれる。
+       layer_1 で &trans 以外にした位置は、原則すべてここに並べること。
+       （除外位置を押しても5秒のタイマーは延長されない。延長されるのはトラボ操作のみ） */
+    excluded-positions = <
+        20  /* row1: I → &mkp MCLK */
+        33  /* row2: J → &mkp LCLK */
+        34  /* row2: K → AMLでは &trans。除外しておくと、AMLを保ったまま
+               layer_0 の &lt SCROLL_LAYER K でスクロールに入れる */
+        35  /* row2: L → &mkp RCLK */
+
+        53  /* row4: LCMD  ┐ */
+        54  /* row4: LALT  │ 修飾キーは除外。cmd+クリック / shift+クリックの途中で */
+        55  /* row4: LCTRL │ AMLが剥がれてクリックがただの文字入力になるのを防ぐ */
+        58  /* row4: &mt LEFT_SHIFT LANG2 ┘ */
+        57  /* row4: &mkp LCLK（親指クリック）。押してもAMLを維持したいので除外 */
+    >;
 };
 
 / {
@@ -66,11 +99,17 @@
             >;
         };
 
+        /* マウスレイヤー。Enter長押し(&lt 1 ENTER)で手動、
+           トラボを動かすと zip_temp_layer で自動（AML）でも乗る。
+           中クリックは I(pos 20)。K(pos 34) は &trans のまま
+           ＝AML中でもK長押しでスクロールに入れるため。
+           ここを &trans 以外にしたら excluded-positions にも位置番号を足すこと。 */
+
         layer_1 {
             bindings = <
 &trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans     &trans     &trans     &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans                  &trans  &trans     &mkp MCLK  &trans     &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &mkp LCLK  &mkp MCLK  &mkp RCLK  &trans  &trans
+&trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &mkp LCLK  &trans     &mkp RCLK  &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans     &trans     &trans     &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans  &trans     &trans     &trans     &trans  &trans
             >;
